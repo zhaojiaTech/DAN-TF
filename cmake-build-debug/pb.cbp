@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="pb"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/zjtech/CLionProjects/pb_test/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/zjtech/CLionProjects/pb_test/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="pb">
+				<Option output="/home/zjtech/CLionProjects/pb_test/cmake-build-debug/pb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zjtech/CLionProjects/pb_test/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/opencv/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tbb/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/facedetect/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/eigen3"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tensorflow-1.7.0/genfiles"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tensorflow-1.7.0"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/protobuf/src"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/nsync/public"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 pb"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="pb/fast">
+				<Option output="/home/zjtech/CLionProjects/pb_test/cmake-build-debug/pb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zjtech/CLionProjects/pb_test/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/opencv/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tbb/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/facedetect/include"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/eigen3"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tensorflow-1.7.0/genfiles"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/tensorflow-1.7.0"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/protobuf/src"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/nsync/public"/>
+					<Add directory="/home/zjtech/CLionProjects/pb_test/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 pb/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/zjtech/CLionProjects/pb_test/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/zjtech/CLionProjects/pb_test/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/zjtech/CLionProjects/pb_test/ZFutil.cpp">
+			<Option target="pb"/>
+		</Unit>
+		<Unit filename="/home/zjtech/CLionProjects/pb_test/main.cpp">
+			<Option target="pb"/>
+		</Unit>
+		<Unit filename="/home/zjtech/CLionProjects/pb_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/ZFutil.h
+vector
+-
+utility
+-
+
+/home/zjtech/CLionProjects/pb_test/ZFutil.cpp
+vector
+-
+algorithm
+-
+utility
+-
+ZFutil.h
+/home/zjtech/CLionProjects/pb_test/ZFutil.h
+
