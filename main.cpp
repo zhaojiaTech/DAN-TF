@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
                 cv::Rect bbox(results[0].bbox.x, results[0].bbox.y, results[0].bbox.width, results[0].bbox.height);
                 auto initlandmarks_1 = ZF::bestFitRect(initlandmark_0, bbox);
                 //
-                //auto tmp = ZF::cropResizeRotate(channelwise_avg, initlandmarks_1);
+                auto tmp = ZF::cropResizeRotate(channelwise_avg, initlandmark_0, initlandmarks_1);
             }
 
             // show img
