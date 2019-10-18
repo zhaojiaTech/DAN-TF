@@ -75,25 +75,42 @@ namespace ZF {
         }
         b /= pow(srcNorm, 2);
 
-        cv::Mat T = (cv::Mat_<double>(2, 2) << a, -b, b, a);
-        cout << T << endl;
+        cv::Mat T = (cv::Mat_<float>(2, 2) << a, -b, b, a);
 
         // convert Point2f to cv::Mat
-        cv::Mat srcMean_mat = (cv::Mat_<double>(1, 2) << srcMean.x, srcMean.y);
+        cv::Mat srcMean_mat = (cv::Mat_<float>(1, 2) << srcMean.x, srcMean.y);
 
         srcMean_mat = srcMean_mat * T;
-        cv::Mat destMean_mat = (cv::Mat_<double>(1, 2) << destMean.x, destMean.y);
-
+        cv::Mat destMean_mat = (cv::Mat_<float>(1, 2) << destMean.x, destMean.y);
 
         return pair<cv::Mat, cv::Mat>(T, destMean_mat - srcMean_mat);
 
     }
 
 
-    int cropResizeRotate(cv::Mat &channelwise_avg, vector<cv::Point2f> &initlandmark_0,
+    tuple<cv::Mat, cv::Mat, cv::Mat> cropResizeRotate(cv::Mat &channelwise_avg, vector<cv::Point2f> &initlandmark_0,
                           vector<cv::Point2f> &initlandmarks_1) {
-        bestFit(initlandmark_0, initlandmarks_1);
-        return 0;
+        auto pair = bestFit(initlandmark_0, initlandmarks_1); // use structured binding to unpack
+        cv::Mat A = pair.first;
+        cv::Mat t = pair.second;
+        cv::Mat A2 = A.inv();
+        cv::Mat t2 = -t * A2;
+
+        cv::Mat outImg = cv::Mat::zeros(channelwise_avg.rows, channelwise_avg.cols, channelwise_avg.type());
+        cv::Mat tmp(2, 1, CV_32FC1);
+        cout << t2 << endl;
+        cout << t2.at<float>(0,1) << endl;
+        cout << t2.at<float>(0,0) << endl;
+        tmp.at<float>(0,0) = t2.at<float>(0, 1);
+        tmp.at<float>(1,0) = t2.at<float>(0, 0);
+        cout << tmp << endl;
+        cv::Mat M;
+        cv::hconcat(A2, tmp, M);
+        cout << A2 << endl;
+        cout << tmp << endl;
+        cout << M << endl;
+        cv::warpAffine(channelwise_avg, outImg, M, outImg.size());
+        return tuple<cv::Mat, cv::Mat, cv::Mat>{outImg, A, t};
     }
 
 

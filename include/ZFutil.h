@@ -13,6 +13,6 @@ using namespace std;
 namespace ZF{
     vector<cv::Point2f> bestFitRect(const vector<cv::Point2f> &initlandmark_0, const cv::Rect &bbox);
     pair<cv::Mat, cv::Mat> bestFit(vector<cv::Point2f> &dest, vector<cv::Point2f> &src);
-    int cropResizeRotate(cv::Mat &channelwise_avg, vector<cv::Point2f> &initlandmark_0, vector<cv::Point2f> &initlandmarks_1);
+    tuple<cv::Mat, cv::Mat, cv::Mat> cropResizeRotate(cv::Mat &channelwise_avg, vector<cv::Point2f> &initlandmark_0, vector<cv::Point2f> &initlandmarks_1);
 }
 #endif //PB_ZFUTIL_H
