@@ -64,8 +64,8 @@ namespace ZF {
         }
 
         // convert std::vector to cv::Mat
-        cv::Mat srcMat(srcVec);
-        cv::Mat destMat(destVec);
+        cv::Mat srcMat(srcVec.size(), 1, CV_32FC1, (float*)srcVec.data()); // (212, 1)
+        cv::Mat destMat(destVec.size(), 1, CV_32FC1, (float*)destVec.data()); // (212, 1)
 
         double srcNorm{cv::norm(srcMat, cv::NORM_L2)};
         double a{srcMat.dot(destMat) / pow(srcNorm, 2)};
@@ -81,7 +81,7 @@ namespace ZF {
         // convert Point2f to cv::Mat
         cv::Mat srcMean_mat = (cv::Mat_<double>(1, 2) << srcMean.x, srcMean.y);
 
-        srcMean_mat = srcMean_mat.dot(T);
+        srcMean_mat = srcMean_mat * T;
         cv::Mat destMean_mat = (cv::Mat_<double>(1, 2) << destMean.x, destMean.y);
 
 
@@ -90,9 +90,10 @@ namespace ZF {
     }
 
 
-    void cropResizeRotate(cv::Mat channelwise_avg, vector<cv::Point2f> &initlandmark_0,
+    int cropResizeRotate(cv::Mat &channelwise_avg, vector<cv::Point2f> &initlandmark_0,
                           vector<cv::Point2f> &initlandmarks_1) {
         bestFit(initlandmark_0, initlandmarks_1);
+        return 0;
     }
 
 
