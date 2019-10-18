@@ -7,6 +7,7 @@
 //#include <opencv2/imgproc/imgproc.hpp>
 //#include <opencv2/highgui/highgui.hpp>
 #include <time.h>
+#include <utility>
 #include <fstream>
 #include <iostream>
 #include <cstdio>
@@ -15,8 +16,6 @@
 //using namespace cv;
 using namespace std;
 using namespace tensorflow;
-
-extern vector<double> initlandmark_xs{};
 
 int main(int argc, char *argv[]) {
     // read video
@@ -63,7 +62,6 @@ int main(int argc, char *argv[]) {
     // load initlandmarks_0
     fstream fs;
     fs.open("../initlandmarks_0.txt", ios::in);
-    printf("initlandmarks.txt:\n");
     if (!fs) {
         printf("failed to open initlandmarks_0.txt");
         return -1;
@@ -71,16 +69,12 @@ int main(int argc, char *argv[]) {
     string line;
     double x;
     double y;
-    vector<double> initlandmark_xs{};
-    vector<double> initlandmark_ys{};
+    vector<cv::Point2f> initlandmark_0{};
     while (getline(fs, line)) {
-        printf("%s\n", line.c_str());
         auto tmp = line.find(',');
         x = std::stod(line.substr(0, tmp));
         y = std::stod(line.substr(tmp + 1));
-//        printf("x: %f    y: %f\n", x, y);
-        initlandmark_xs.push_back(x);
-        initlandmark_ys.push_back(y);
+        initlandmark_0.emplace_back(x, y);
     }
     fs.close();
 
@@ -102,7 +96,6 @@ int main(int argc, char *argv[]) {
         for (auto i = 0; i < img.channels(); i++) {
             channelwise_avg += channels[i];
         }
-
         channelwise_avg /= img.channels();
 
 //        printf("%d\n", channels[0].at<uchar>(0, 0));
@@ -125,16 +118,18 @@ int main(int argc, char *argv[]) {
                 printf("no face detected\n");
             } else {
                 // draw bbox on img
-                cv::rectangle(img, cv::Rect(results[0].bbox.x, results[0].bbox.y, results[0].bbox.width, results[0].bbox.height), cv::Scalar(255, 0, 0));
-                // pair<vector<double>, vector<double>>
-                auto initlandmarks_1 = ZF::bestFitRect(initlandmark_xs, initlandmark_ys, vector<int>{results[0].bbox.x, results[0].bbox.y, results[0].bbox.x + results[0].bbox.width, results[0].bbox.y + results[0].bbox.height});
+                // cv::rectangle(img, cv::Rect(results[0].bbox.x, results[0].bbox.y, results[0].bbox.width, results[0].bbox.height), cv::Scalar(255, 0, 0));
+                cv::Rect bbox(results[0].bbox.x, results[0].bbox.y, results[0].bbox.width, results[0].bbox.height);
+                auto initlandmarks_1 = ZF::bestFitRect(initlandmark_0, bbox);
                 //
-                ZF::cropResizeRotate(img, initlandmarks_1);
+                //auto tmp = ZF::cropResizeRotate(channelwise_avg, initlandmarks_1);
             }
 
             // show img
             cv::imshow("img", img);
             cv::waitKey(5);
+
+            break;
         }
 
     }

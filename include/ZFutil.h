@@ -11,6 +11,6 @@
 using namespace std;
 
 namespace ZF{
-    pair<vector<double>, vector<double>> bestFitRect(const vector<double> &initlandmark_xs, const vector<double> &initlandmark_ys, const vector<int> &&bbox);
+    vector<cv::Point2f> bestFitRect(const vector<cv::Point2f> &initlandmark_0, const cv::Rect &bbox);
 }
 #endif //PB_ZFUTIL_H
