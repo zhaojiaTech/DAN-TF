@@ -59,24 +59,17 @@ int main(int argc, char *argv[]) {
     // initialize face detector
     imi::FaceDetectionInitialization();
 
-    // load initlandmarks_0
-    fstream fs;
-    fs.open("../initlandmarks_0.txt", ios::in);
-    if (!fs) {
-        printf("failed to open initlandmarks_0.txt");
-        return -1;
-    }
-    string line;
-    double x;
-    double y;
-    vector<cv::Point2f> initlandmark_0{};
-    while (getline(fs, line)) {
-        auto tmp = line.find(',');
-        x = std::stod(line.substr(0, tmp));
-        y = std::stod(line.substr(tmp + 1));
-        initlandmark_0.emplace_back(x, y);
-    }
-    fs.close();
+    // load initlandmark_0
+    vector<cv::Point2f> initlandmark_0;
+    ZF::load_initlandmark("../initlandmarks_0.txt", initlandmark_0);
+
+    // load meanImg
+    cv::Mat meanImg;
+    ZF::loadImg("../meanImg.txt", meanImg);
+
+    // load stdDevImg
+    cv::Mat stdDevImg;
+    ZF::loadImg("../stdDevImg.txt", stdDevImg);
 
     bool reset = true;
 
@@ -98,11 +91,6 @@ int main(int argc, char *argv[]) {
         }
         channelwise_avg /= img.channels();
 
-//        printf("%d\n", channels[0].at<uchar>(0, 0));
-//        printf("%d\n", channels[1].at<uchar>(0, 0));
-//        printf("%d\n", channels[2].at<uchar>(0, 0));
-//        printf("%d\n", channelwise_avg.at<uchar>(0, 0));
-
         if (reset) {
             int startX0{0};
             int startY0{0};
@@ -122,7 +110,52 @@ int main(int argc, char *argv[]) {
                 cv::Rect bbox(results[0].bbox.x, results[0].bbox.y, results[0].bbox.width, results[0].bbox.height);
                 auto initlandmarks_1 = ZF::bestFitRect(initlandmark_0, bbox);
                 //
-                auto tmp = ZF::cropResizeRotate(channelwise_avg, initlandmark_0, initlandmarks_1);
+                auto tuple= ZF::cropResizeRotate(channelwise_avg, initlandmark_0, initlandmarks_1);
+                cv::Mat &inputImg = get<0>(tuple);
+                inputImg.convertTo(inputImg, CV_32FC1);
+//                cout << inputImg.type() << endl;
+//                cout << meanImg.type() << endl;
+                cv::Mat &A = get<1>(tuple);
+                cv::Mat &t = get<2>(tuple);
+                inputImg -= meanImg;
+                inputImg /= stdDevImg;
+
+                // convert inputImg to tensor
+                Tensor inputImg_tensor(DT_FLOAT, TensorShape({1, 112, 112, 1}));
+                auto input_tensor_mapped = inputImg_tensor.tensor<float, 4>();
+                for(int i = 0; i < inputImg.rows; i++){
+                    for(int j = 0; j < inputImg.cols; j++){
+                        input_tensor_mapped(0, i, j, 0) = inputImg.at<float>(i, j);
+                    }
+                }
+                // convert bool to tensor
+                Tensor isTrain_tensor(DT_BOOL, TensorShape());
+                isTrain_tensor.scalar<bool>()() = false;
+                vector<pair<string, Tensor>> feedDict = {{"Placeholder", inputImg_tensor},
+                                                         {"Placeholder_2", isTrain_tensor}};
+
+                vector<tensorflow::Tensor> outputs;
+                string output_node = "Stage1/Reshape_1";
+                Status status_run = session->Run(feedDict, {output_node}, {}, &outputs);
+
+                if (!status_run.ok()) {
+                    cout << "ERROR: RUN failed..." << std::endl;
+                    cout << status_run.ToString() << "\n";
+                    return -1;
+                }
+
+                cout << outputs[0].shape().dim_size(0) << endl; // 1
+                cout << outputs[0].shape().dim_size(1) << endl; // 106
+                cout << outputs[0].shape().dim_size(2) << endl; // 2
+
+                cv::Mat landmark_out = cv::Mat::zeros(112, 2, CV_32FC1);
+                for(int i = 0; i < 112; i++){
+                    landmark_out.at<float>(i, 0) = outputs[0].tensor<float_t, 3>()(0, i, 0);
+                    landmark_out.at<float>(i, 1) = outputs[0].tensor<float_t, 3>()(0, i, 1);
+                }
+
+                
+
             }
 
             // show img
@@ -136,18 +169,6 @@ int main(int argc, char *argv[]) {
 
     cap.release();
 
-    /*vector<pair<string, Tensor>> feeddict = {{},
-                                             {}};
-
-    vector<tensorflow::Tensor> outputs;
-    string output_node = output_tensor_name;
-    Status status_run = session->Run({{input_tensor_name, resized_tensor}}, {output_node}, {}, &outputs);
-
-    if (!status_run.ok()) {
-        cout << "ERROR: RUN failed..." << std::endl;
-        cout << status_run.ToString() << "\n";
-        return -1;
-    }*/
 
     return 0;
 }

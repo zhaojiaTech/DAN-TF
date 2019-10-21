@@ -42,6 +42,7 @@ SET(FaceDetect_LIB ${PROJECT_SOURCE_DIR}/facedetect/lib/libfacedetect.so)
 #link_directories(${PROJECT_SOURCE_DIR}/opencv/lib)
 
 add_executable(pb main.cpp ZFutil.cpp)
+#add_executable(pb file.cpp)
 
 target_link_libraries(pb ${OpenCV_LIB})
 target_link_libraries(pb ${DEP_LIB})

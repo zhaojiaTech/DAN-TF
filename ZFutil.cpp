@@ -7,6 +7,7 @@
 #include <cmath>
 #include "opencv2/opencv.hpp"
 #include "ZFutil.h"
+#include <fstream>
 
 using namespace std;
 
@@ -98,19 +99,68 @@ namespace ZF {
 
         cv::Mat outImg = cv::Mat::zeros(channelwise_avg.rows, channelwise_avg.cols, channelwise_avg.type());
         cv::Mat tmp(2, 1, CV_32FC1);
-        cout << t2 << endl;
-        cout << t2.at<float>(0,1) << endl;
-        cout << t2.at<float>(0,0) << endl;
+//        cout << t2 << endl;
+//        cout << t2.at<float>(0,1) << endl;
+//        cout << t2.at<float>(0,0) << endl;
         tmp.at<float>(0,0) = t2.at<float>(0, 1);
         tmp.at<float>(1,0) = t2.at<float>(0, 0);
-        cout << tmp << endl;
+//        cout << tmp << endl;
         cv::Mat M;
         cv::hconcat(A2, tmp, M);
-        cout << A2 << endl;
-        cout << tmp << endl;
-        cout << M << endl;
+//        cout << A2 << endl;
+//        cout << tmp << endl;
+//        cout << M << endl;
         cv::warpAffine(channelwise_avg, outImg, M, outImg.size());
+        cv::resize(outImg, outImg, cv::Size(112, 112));
         return tuple<cv::Mat, cv::Mat, cv::Mat>{outImg, A, t};
+    }
+
+
+    int loadImg(const char *txtFilePath, cv::Mat &img){
+        ifstream ifs;
+        ifs.open(txtFilePath, ios::in);
+        if(!ifs){
+            printf("failed to open %s", txtFilePath);
+            return -1;
+        }
+        img = cv::Mat::zeros(112, 112, CV_32FC1);
+        string line;
+        int row{0};
+        int col{0};
+        while(row < 112 && getline(ifs, line)){
+            istringstream iss(line);
+            float value;
+            while(col < 112 && iss >> value){
+                img.at<float>(row, col) = value;
+                col++;
+            }
+            col = 0;
+            row++;
+        }
+
+        ifs.close();
+        return 0;
+    }
+
+
+    int load_initlandmark(const char *filepath, vector<cv::Point2f> &initlandmark_0){
+        ifstream ifs;
+        ifs.open("../initlandmarks_0.txt", ios::in);
+        if (!ifs) {
+            printf("failed to open %s", filepath);
+            return -1;
+        }
+        string line;
+        double x;
+        double y;
+        while (getline(ifs, line)) {
+            auto tmp = line.find(',');
+            x = std::stod(line.substr(0, tmp));
+            y = std::stod(line.substr(tmp + 1));
+            initlandmark_0.emplace_back(x, y);
+        }
+        ifs.close();
+        return 0;
     }
 
 
