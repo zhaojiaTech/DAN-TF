@@ -155,13 +155,12 @@ int main(int argc, char *argv[]) {
                 }
 
                 landmark_out = landmark_out * A.inv();
-                cout << landmark_out << endl;
+//                cout << landmark_out << endl;
 //                cout << A << endl;
 //                cout << t << endl;
 //                landmark_out.convertTo(landmark_out, CV_16UC1);
 //                cout << landmark_out << endl;
                 for(int i = 0; i < landmark_out.rows; i++ ){
-                    cout << cv::Point2f(landmark_out.at<float>(i, 0), landmark_out.at<float>(i, 1)) << endl;
                     cv::circle(img, cv::Point2f(landmark_out.at<float>(i, 0), landmark_out.at<float>(i, 1)), 2, cv::Scalar(255, 255, 0), 1);
                 }
 
